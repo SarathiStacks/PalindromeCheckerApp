@@ -1,36 +1,68 @@
 /**
  * ============================================================
- * MAIN CLASS - UseCase1PalindromeApp
+ * MAIN CLASS - UseCase2PalindromeCheckerApp
  * ============================================================
  *
- * Use Case 1: Application Entry & Welcome Message
+ * Use Case 2: Hardcoded Palindrome Validation
  *
  * Description:
- * This class represents the entry point of the
- * Palindrome Checker Management System.
+ * This class demonstrates basic palindrome validation
+ * using a hardcoded string value.
  *
  * At this stage, the application:
- * - Starts execution from the main() method
- * - Displays a welcome message
- * - Shows application version
+ * - Stores a predefined string
+ * - Compares characters from both ends
+ * - Determines whether the string is a palindrome
+ * - Displays the result on the console
  *
- * No palindrome logic is implemented yet.
- *
- * The goal is to establish a clear startup flow.
+ * This use case introduces fundamental comparison logic
+ * before using advanced data structures.
  *
  * @SarathiStacks Developer
- * @version 1.0
+ * @version 2.0
  */
+
+
 
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
+
     public static void main(String[] args) {
-        /* Application entry point */
 
-        System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version:1.0");
-        System.out.println("System Initialized Successfully");
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("=== Palindrome Checker ===");
+        System.out.print("Enter text: ");
+        String input = scanner.nextLine();
+
+        // Remove spaces and special characters, convert to lowercase
+        String processedInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        boolean isPalindrome = checkPalindrome(processedInput);
+
+        if (isPalindrome) {
+            System.out.println("Is it a palindrome: Yes");
+        } else {
+            System.out.println("Is it a palindrome: No");
+        }
+
+        scanner.close();
+    }
+
+    public static boolean checkPalindrome(String text) {
+
+        int left = 0;
+        int right = text.length() - 1;
+
+        while (left < right) {
+            if (text.charAt(left) != text.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+
+        return true;
     }
 }
