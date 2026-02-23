@@ -1,28 +1,28 @@
 /**
  * =========================================================================
- * MAIN CLASS - UseCase5PalindromeCheckerApp
+ * MAIN CLASS - UseCase6PalindromeCheckerApp
  * =========================================================================
- *
- * Use Case 5: Stack Based Palindrome Checker
- *
- * Description:
- * This class validates a palindrome using a Stack
- * data structure which follows the LIFO principle.
- *
- * At this stage, the application:
- * - Pushes characters into a stack
- * - Pops them in reverse order
- * - Compares with original sequence
- * - Displays the result
- *
- * This maps stack behavior to reversal logic.
- *
- * @SarathiStacks Developer
- * @version 5.0
+ * * Use Case 6: Queue + Stack Fairness Check
+ * * Description:
+ * This class demonstrates palindrome validation using
+ * two different data structures:
+ * * - Queue (FIFO - First In First Out)
+ * - Stack (LIFO - Last In First Out)
+ * * Characters are inserted into both structures and then
+ * compared by removing from the front of the queue and
+ * the top of the stack.
+ * * If all characters match, the input string is confirmed
+ * as a palindrome.
+ * * This use case helps understand how FIFO and LIFO
+ * behaviors can be combined for symmetric comparison.
+ * * @SarathiStacks Developer
+ * @version 6.0
  */
 
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
@@ -34,21 +34,22 @@ public class PalindromeCheckerApp {
         // Convert to lowercase for case-insensitive comparison
         input = input.toLowerCase();
 
-        // Convert string to character array
         char[] characters = input.toCharArray();
 
         Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
 
-        // Push all characters into stack
+        // Add characters to stack and queue
         for (char ch : characters) {
             stack.push(ch);
+            queue.add(ch);
         }
 
         boolean isPalindrome = true;
 
-        // Compare original characters with popped characters
-        for (int i = 0; i < characters.length; i++) {
-            if (characters[i] != stack.pop()) {
+        // Compare stack and queue elements
+        while (!stack.isEmpty()) {
+            if (stack.pop() != queue.remove()) {
                 isPalindrome = false;
                 break;
             }
