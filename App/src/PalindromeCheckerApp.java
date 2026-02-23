@@ -1,23 +1,28 @@
 /**
  * =========================================================================
- * MAIN CLASS - UseCase4PalindromeCheckerApp
+ * MAIN CLASS - UseCase5PalindromeCheckerApp
  * =========================================================================
- * * Use Case 4: Character Array Based Validation
- * * Description:
- * This class validates a palindrome by converting
- * the string into a character array and comparing
- * characters using the two-pointer technique.
- * * At this stage, the application:
- * - Converts string to char array
- * - Uses start and end pointers
- * - Compares characters efficiently
+ *
+ * Use Case 5: Stack Based Palindrome Checker
+ *
+ * Description:
+ * This class validates a palindrome using a Stack
+ * data structure which follows the LIFO principle.
+ *
+ * At this stage, the application:
+ * - Pushes characters into a stack
+ * - Pops them in reverse order
+ * - Compares with original sequence
  * - Displays the result
- * * This reduces extra memory usage.
- * * @SarathiStacks Developer
- * @version 4.0
+ *
+ * This maps stack behavior to reversal logic.
+ *
+ * @SarathiStacks Developer
+ * @version 5.0
  */
 
 import java.util.Scanner;
+import java.util.Stack;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
@@ -26,24 +31,27 @@ public class PalindromeCheckerApp {
         System.out.print("Enter text: ");
         String input = sc.nextLine();
 
-        // Convert string to lowercase for case-insensitive comparison
+        // Convert to lowercase for case-insensitive comparison
         input = input.toLowerCase();
 
         // Convert string to character array
         char[] characters = input.toCharArray();
 
-        boolean isPalindrome = true;
-        int start = 0;
-        int end = characters.length - 1;
+        Stack<Character> stack = new Stack<>();
 
-        // Compare characters from both ends
-        while (start < end) {
-            if (characters[start] != characters[end]) {
+        // Push all characters into stack
+        for (char ch : characters) {
+            stack.push(ch);
+        }
+
+        boolean isPalindrome = true;
+
+        // Compare original characters with popped characters
+        for (int i = 0; i < characters.length; i++) {
+            if (characters[i] != stack.pop()) {
                 isPalindrome = false;
                 break;
             }
-            start++;
-            end--;
         }
 
         // Output
