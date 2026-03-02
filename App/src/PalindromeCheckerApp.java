@@ -1,28 +1,90 @@
 /**
  * ======================================================================
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - UseCase12PalindromeCheckerApp
  * ======================================================================
  *
- * Use Case 11: Object-Oriented Palindrome Service
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms
  *
  * Description:
- * This class demonstrates palindrome validation using
- * object-oriented design.
+ * This class demonstrates how different palindrome
+ * validation algorithms can be selected dynamically
+ * at runtime using the Strategy Design Pattern.
  *
- * The palindrome logic is encapsulated inside a
- * PalindromeService class.
+ * At this stage, the application:
+ * - Defines a common PalindromeStrategy interface
+ * - Implements a concrete Stack based strategy
+ * - Injects the strategy at runtime
+ * - Executes the selected algorithm
  *
- * This improves:
- * - Reusability
- * - Readability
- * - Separation of concerns
+ * No performance comparison is done in this use case.
+ * The focus is purely on algorithm interchangeability.
+ *
+ * The goal is to teach extensible algorithm design.
  *
  * @SarathiStacks Developer
- * @version 11.0
+ * @version 12.0
  */
 
 import java.util.Scanner;
 
+// Strategy Interface
+interface PalindromeStrategy {
+    boolean isPalindrome(String input);
+}
+
+// Concrete Strategy 1 - Recursive
+class RecursivePalindromeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean isPalindrome(String input) {
+        String processed = input.replaceAll("\\s+", "").toLowerCase();
+        return check(processed, 0, processed.length() - 1);
+    }
+
+    private boolean check(String str, int left, int right) {
+        if (left >= right) return true;
+        if (str.charAt(left) != str.charAt(right)) return false;
+        return check(str, left + 1, right - 1);
+    }
+}
+
+// Concrete Strategy 2 - Iterative
+class IterativePalindromeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean isPalindrome(String input) {
+
+        String processed = input.replaceAll("\\s+", "").toLowerCase();
+
+        int left = 0;
+        int right = processed.length() - 1;
+
+        while (left < right) {
+            if (processed.charAt(left) != processed.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+// Context Class
+class PalindromeContext {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeContext(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean executeStrategy(String input) {
+        return strategy.isPalindrome(input);
+    }
+}
+
+// MAIN CLASS (Must match file name)
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
@@ -32,44 +94,28 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Create service object
-        PalindromeService service = new PalindromeService();
+        System.out.println("Choose Algorithm:");
+        System.out.println("1. Recursive");
+        System.out.println("2. Iterative");
+        System.out.print("Enter choice: ");
 
-        boolean result = service.isPalindrome(input);
+        int choice = sc.nextInt();
+
+        PalindromeStrategy strategy;
+
+        if (choice == 1) {
+            strategy = new RecursivePalindromeStrategy();
+        } else {
+            strategy = new IterativePalindromeStrategy();
+        }
+
+        PalindromeContext context = new PalindromeContext(strategy);
+
+        boolean result = context.executeStrategy(input);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
 
         sc.close();
-    }
-}
-
-// Service class (Business Logic)
-class PalindromeService {
-
-    public boolean isPalindrome(String input) {
-
-        if (input == null) {
-            return false;
-        }
-
-        // Remove spaces and convert to lowercase
-        String processed = input.replaceAll("\\s+", "").toLowerCase();
-
-        return checkRecursive(processed, 0, processed.length() - 1);
-    }
-
-    // Recursive helper method
-    private boolean checkRecursive(String str, int left, int right) {
-
-        if (left >= right) {
-            return true;
-        }
-
-        if (str.charAt(left) != str.charAt(right)) {
-            return false;
-        }
-
-        return checkRecursive(str, left + 1, right - 1);
     }
 }
