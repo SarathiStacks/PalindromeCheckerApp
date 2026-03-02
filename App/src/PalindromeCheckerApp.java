@@ -1,46 +1,47 @@
 /**
  * ======================================================================
- * MAIN CLASS - UseCase9RecursivePalindrome
+ * MAIN CLASS - UseCase10PalindromeCheckerApp
  * ======================================================================
  *
- * Use Case 9: Recursive Palindrome Checker
+ * Use Case 10: Normalized Palindrome Validation
  *
  * Description:
- * This class validates a palindrome using recursion.
+ * This class validates a palindrome after preprocessing
+ * the input string.
  *
- * Characters are compared from the outer positions
- * moving inward using recursive calls.
+ * Normalization includes:
+ * - Removing spaces and symbols
+ * - Converting to lowercase
  *
- * The recursion stops when:
- * - All characters are matched, or
- * - A mismatch is found.
+ * This ensures the palindrome check is logical rather
+ * than character-format dependent.
  *
- * This use case demonstrates divide-and-conquer
- * logic using method recursion.
+ * Example:
+ * "A man a plan a canal Panama"
  *
- * @SarathiStacks Developer
- * @version 9.0
+ * @SarathiStacks    Developer
+ * @version 10.0
  */
 
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    // Recursive method to check palindrome
-    public static boolean isPalindrome(String str) {
+    // Recursive method using index approach (efficient)
+    public static boolean isPalindrome(String str, int left, int right) {
 
-        // Base case: if string length is 0 or 1
-        if (str.length() <= 1) {
+        // Base case
+        if (left >= right) {
             return true;
         }
 
-        // If first and last characters are not equal
-        if (str.charAt(0) != str.charAt(str.length() - 1)) {
+        // If characters don't match
+        if (str.charAt(left) != str.charAt(right)) {
             return false;
         }
 
-        // Recursive call on substring (remove first and last char)
-        return isPalindrome(str.substring(1, str.length() - 1));
+        // Recursive call
+        return isPalindrome(str, left + 1, right - 1);
     }
 
     public static void main(String[] args) {
@@ -50,7 +51,10 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        boolean result = isPalindrome(input);
+        // Remove spaces & convert to lowercase
+        String processed = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean result = isPalindrome(processed, 0, processed.length() - 1);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
