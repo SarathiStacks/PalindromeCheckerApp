@@ -1,38 +1,39 @@
+
+
 /**
  * ======================================================================
- * MAIN CLASS - UseCase12PalindromeCheckerApp
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
  * ======================================================================
  *
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * This class demonstrates how different palindrome
- * validation algorithms can be selected dynamically
- * at runtime using the Strategy Design Pattern.
+ * This class measures and compares the execution
+ * performance of palindrome validation algorithms.
  *
  * At this stage, the application:
- * - Defines a common PalindromeStrategy interface
- * - Implements a concrete Stack based strategy
- * - Injects the strategy at runtime
- * - Executes the selected algorithm
+ * - Uses a palindrome strategy implementation
+ * - Captures execution start and end time
+ * - Calculates total execution duration
+ * - Displays benchmarking results
  *
- * No performance comparison is done in this use case.
- * The focus is purely on algorithm interchangeability.
+ * This use case focuses purely on performance
+ * measurement and algorithm comparison.
  *
- * The goal is to teach extensible algorithm design.
+ * The goal is to introduce benchmarking concepts.
  *
  * @SarathiStacks Developer
- * @version 12.0
+ * @version 13.0
  */
-
 import java.util.Scanner;
 
 // Strategy Interface
 interface PalindromeStrategy {
     boolean isPalindrome(String input);
+    String getName();
 }
 
-// Concrete Strategy 1 - Recursive
+// Recursive Strategy
 class RecursivePalindromeStrategy implements PalindromeStrategy {
 
     @Override
@@ -46,14 +47,18 @@ class RecursivePalindromeStrategy implements PalindromeStrategy {
         if (str.charAt(left) != str.charAt(right)) return false;
         return check(str, left + 1, right - 1);
     }
+
+    @Override
+    public String getName() {
+        return "Recursive Approach";
+    }
 }
 
-// Concrete Strategy 2 - Iterative
+// Iterative Strategy (Two Pointer)
 class IterativePalindromeStrategy implements PalindromeStrategy {
 
     @Override
     public boolean isPalindrome(String input) {
-
         String processed = input.replaceAll("\\s+", "").toLowerCase();
 
         int left = 0;
@@ -68,23 +73,14 @@ class IterativePalindromeStrategy implements PalindromeStrategy {
         }
         return true;
     }
-}
 
-// Context Class
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean executeStrategy(String input) {
-        return strategy.isPalindrome(input);
+    @Override
+    public String getName() {
+        return "Iterative (Two Pointer)";
     }
 }
 
-// MAIN CLASS (Must match file name)
+// Main Application
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
@@ -94,27 +90,29 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        System.out.println("Choose Algorithm:");
-        System.out.println("1. Recursive");
-        System.out.println("2. Iterative");
-        System.out.print("Enter choice: ");
+        // Strategies
+        PalindromeStrategy[] strategies = {
+                new RecursivePalindromeStrategy(),
+                new IterativePalindromeStrategy()
+        };
 
-        int choice = sc.nextInt();
+        System.out.println("\n--- Performance Comparison ---");
 
-        PalindromeStrategy strategy;
+        for (PalindromeStrategy strategy : strategies) {
 
-        if (choice == 1) {
-            strategy = new RecursivePalindromeStrategy();
-        } else {
-            strategy = new IterativePalindromeStrategy();
+            long startTime = System.nanoTime();
+
+            boolean result = strategy.isPalindrome(input);
+
+            long endTime = System.nanoTime();
+
+            long duration = endTime - startTime;
+
+            System.out.println("Algorithm: " + strategy.getName());
+            System.out.println("Result   : " + result);
+            System.out.println("Time (ns): " + duration);
+            System.out.println("-----------------------------");
         }
-
-        PalindromeContext context = new PalindromeContext(strategy);
-
-        boolean result = context.executeStrategy(input);
-
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
 
         sc.close();
     }
