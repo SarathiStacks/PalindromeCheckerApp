@@ -1,54 +1,60 @@
 /**
  * ======================================================================
- * MAIN CLASS - UseCase8PalindromeCheckerApp
+ * MAIN CLASS - UseCase9RecursivePalindrome
  * ======================================================================
- * * Use Case 8: Linked List Based Palindrome Checker
- * * Description:
- * This class checks whether a string is a palindrome
- * using a LinkedList.
- * * Characters are added to the list and then compared
- * by removing elements from both ends:
- * * - removeFirst()
- * - removeLast()
- * * This demonstrates how LinkedList supports
- * double-ended operations for symmetric validation.
- * * @SarathiStacks Developer
- * @version 8.0
+ *
+ * Use Case 9: Recursive Palindrome Checker
+ *
+ * Description:
+ * This class validates a palindrome using recursion.
+ *
+ * Characters are compared from the outer positions
+ * moving inward using recursive calls.
+ *
+ * The recursion stops when:
+ * - All characters are matched, or
+ * - A mismatch is found.
+ *
+ * This use case demonstrates divide-and-conquer
+ * logic using method recursion.
+ *
+ * @SarathiStacks Developer
+ * @version 9.0
  */
 
-import java.util.LinkedList;
+import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
+    // Recursive method to check palindrome
+    public static boolean isPalindrome(String str) {
+
+        // Base case: if string length is 0 or 1
+        if (str.length() <= 1) {
+            return true;
+        }
+
+        // If first and last characters are not equal
+        if (str.charAt(0) != str.charAt(str.length() - 1)) {
+            return false;
+        }
+
+        // Recursive call on substring (remove first and last char)
+        return isPalindrome(str.substring(1, str.length() - 1));
+    }
+
     public static void main(String[] args) {
 
-        // Define the input string
-        String input = "level";
+        Scanner sc = new Scanner(System.in);
 
-        // Create a LinkedList to store characters
-        LinkedList<Character> list = new LinkedList<>();
+        System.out.print("Enter a string: ");
+        String input = sc.nextLine();
 
-        // Add each character to the linked list
-        for (char c : input.toCharArray()) {
-            list.add(c);
-        }
+        boolean result = isPalindrome(input);
 
-        // Flag to track palindrome state
-        boolean isPalindrome = true;
-
-        // Compare until only one or zero elements remain
-        while (list.size() > 1) {
-            char first = list.removeFirst();  // remove from front
-            char last = list.removeLast();    // remove from end
-
-            if (first != last) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Print result
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is Palindrome? : " + result);
+
+        sc.close();
     }
 }
