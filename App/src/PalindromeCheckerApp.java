@@ -1,48 +1,29 @@
 /**
  * ======================================================================
- * MAIN CLASS - UseCase10PalindromeCheckerApp
+ * MAIN CLASS - UseCase11PalindromeCheckerApp
  * ======================================================================
  *
- * Use Case 10: Normalized Palindrome Validation
+ * Use Case 11: Object-Oriented Palindrome Service
  *
  * Description:
- * This class validates a palindrome after preprocessing
- * the input string.
+ * This class demonstrates palindrome validation using
+ * object-oriented design.
  *
- * Normalization includes:
- * - Removing spaces and symbols
- * - Converting to lowercase
+ * The palindrome logic is encapsulated inside a
+ * PalindromeService class.
  *
- * This ensures the palindrome check is logical rather
- * than character-format dependent.
+ * This improves:
+ * - Reusability
+ * - Readability
+ * - Separation of concerns
  *
- * Example:
- * "A man a plan a canal Panama"
- *
- * @SarathiStacks    Developer
- * @version 10.0
+ * @SarathiStacks Developer
+ * @version 11.0
  */
 
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
-
-    // Recursive method using index approach (efficient)
-    public static boolean isPalindrome(String str, int left, int right) {
-
-        // Base case
-        if (left >= right) {
-            return true;
-        }
-
-        // If characters don't match
-        if (str.charAt(left) != str.charAt(right)) {
-            return false;
-        }
-
-        // Recursive call
-        return isPalindrome(str, left + 1, right - 1);
-    }
 
     public static void main(String[] args) {
 
@@ -51,14 +32,44 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Remove spaces & convert to lowercase
-        String processed = input.replaceAll("\\s+", "").toLowerCase();
+        // Create service object
+        PalindromeService service = new PalindromeService();
 
-        boolean result = isPalindrome(processed, 0, processed.length() - 1);
+        boolean result = service.isPalindrome(input);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
 
         sc.close();
+    }
+}
+
+// Service class (Business Logic)
+class PalindromeService {
+
+    public boolean isPalindrome(String input) {
+
+        if (input == null) {
+            return false;
+        }
+
+        // Remove spaces and convert to lowercase
+        String processed = input.replaceAll("\\s+", "").toLowerCase();
+
+        return checkRecursive(processed, 0, processed.length() - 1);
+    }
+
+    // Recursive helper method
+    private boolean checkRecursive(String str, int left, int right) {
+
+        if (left >= right) {
+            return true;
+        }
+
+        if (str.charAt(left) != str.charAt(right)) {
+            return false;
+        }
+
+        return checkRecursive(str, left + 1, right - 1);
     }
 }
